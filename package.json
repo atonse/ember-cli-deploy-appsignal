@@ -48,6 +48,8 @@
     "ember-try": "^1.0.0",
     "eslint-plugin-ember": "^6.2.0",
     "eslint-plugin-node": "^9.0.1",
+    "form-data": "^3.0.0",
+    "got": "^9.6.0",
     "loader.js": "^4.7.0",
     "qunit-dom": "^0.8.4"
   },

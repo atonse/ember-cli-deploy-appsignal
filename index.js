@@ -13,7 +13,6 @@ module.exports = {
       requiredConfig: ['pushApiKey'],
 
       defaultConfig: {
-        filePrefixes: (context) => ['vendor', context.project.pkg.name],
         appName: (context) => context.project.pkg.name,
         environment: (context) => context.deployTarget,
         appsignalUrl: 'https://appsignal.com/api/sourcemaps'

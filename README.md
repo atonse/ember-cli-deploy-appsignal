@@ -27,9 +27,9 @@ Add the following to `deploy.js`:
 
 ```js
 ENV.appsignal = {
-  appName: '<your app name>',
-  pushApiKey: '<your push key, not front-end key>',
-  environment: '<optional: appsignal environment, default is deployTarget>'
+  pushApiKey: '<required: your push key, not front-end key>',
+  appName: '<optional: your app name, defaults to package name>',
+  environment: '<optional: appsignal environment, default is deployTarget>',
   appsignalUrl: '<optional: default is https://appsignal.com/api/sourcemaps'
 }
 ```

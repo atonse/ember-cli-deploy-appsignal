@@ -1,7 +1,7 @@
 ember-cli-deploy-appsignal
 ==============================================================================
 
-[Short description of the addon.]
+Ember Deploy plugin for automatically uploading your JS SourceMaps to Appsignal for their FrontEnd reporting product.
 
 
 Compatibility
@@ -23,8 +23,16 @@ ember install ember-cli-deploy-appsignal
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+Add the following to `deploy.js`:
 
+```js
+ENV.appsignal = {
+  appName: '<your app name>',
+  pushApiKey: '<your push key, not front-end key>',
+  environment: '<optional: appsignal environment, default is deployTarget>'
+  appsignalUrl: '<optional: default is https://appsignal.com/api/sourcemaps'
+}
+```
 
 Contributing
 ------------------------------------------------------------------------------

@@ -1,8 +1,8 @@
 'use strict';
 var BasePlugin = require('ember-cli-deploy-plugin');
 var fs = require("fs");
-var FormData = require('form-data');
-var got = require('got');
+var request = require('request-promise');
+var throat = require('throat');
 
 module.exports = {
   name: require('./package').name,
@@ -33,32 +33,28 @@ module.exports = {
 
         const revisionKey = context.revisionData.revisionKey;
 
-        const requests = files.map(file => {
+        const requests = files.map(throat(1, file => {
           const cdnURL = `${assetMap.prepend}${assetMap.assets[file]}`;
           const mapFile = `${context.config.build.outputPath}/${assetMap.assets[file.replace(".js", ".map")]}`;
+          console.log(file, mapFile);
 
-          const form = new FormData();
+          if (assetMap.assets[file.replace(".js", ".map")] === undefined) {
+            return;
+          }
 
-          form.append('name[]', cdnURL);
-          form.append('revision', revisionKey);
-          form.append('file', fs.createReadStream(mapFile));
 
-          return new Promise((resolve, reject) => {
-            form.submit(uri, function(err, res) {
-              console.log(resp);
-              if (err) {
-                reject('Error!', err);
-              } else {
-                resolve('Response', res.resume());
-              }
-            });
-          })
-        });
+          const formData = {
+            'name[]': cdnURL,
+            'revision': revisionKey,
+            'file': fs.createReadStream(mapFile)
+          };
 
-        Promise
-          .all(requests)
-          .then(values => console.log('finished requests', values))
-          .catch(() => "failed!!");
+          return request.post({uri, formData});
+        }));
+
+        return Promise.all(requests)
+                .then(values => this.log('finished requests', values))
+                .catch((err) => this.log(err));
 
       //   curl -k -X POST -H 'Content-Type: multipart/form-data' \
       // -F 'name[]=https://d26keeai591nv2.cloudfront.net/assets/vendor-7958d9dcb7e60fe198d757abc7c2de5c.js' \

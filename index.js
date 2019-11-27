@@ -30,7 +30,7 @@ module.exports = {
 
         const files = Object.keys(assetMap.assets).filter((key) => key.endsWith('.js'));
 
-        const revisionKey = context.revisionData.revisionKey;
+        const revisionKey = context.revisionData.revisionKey.split('+').pop();
 
         const requests = files.map(throat(1, file => {
           const cdnURL = `${assetMap.prepend}${assetMap.assets[file]}`;
